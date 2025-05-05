@@ -2,10 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\fabric-example-mod",
-    "\\fabric-example-mod\\gradle",
-    "\\fabric-example-mod\\gradle\\wrapper",
-    "\\fabric-example-mod\\src\\main"
+    "\\fabric-example-mod\\src",
+    "\\fabric-example-mod\\src\\main",
+    "\\fabric-example-mod\\src\\main\\java",
+    "\\fabric-example-mod\\src\\main\\java\\com",
+    "\\fabric-example-mod\\src\\main\\java\\com\\example",
+    "\\fabric-example-mod\\src\\main\\java\\com\\example\\discordverifier",
+    "\\fabric-example-mod\\src\\main\\resources"
   ],
-  "SelectedNode": "\\README.md",
+  "SelectedNode": "\\fabric-example-mod\\build.gradle",
   "PreviewInSolutionExplorer": false
 }

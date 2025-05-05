@@ -1,40 +1,61 @@
+/*******************************************************
+ * build.gradle – 9 MB jar (JDA only)
+ *******************************************************/
 plugins {
-    id 'fabric-loom' version '1.8.13'
-    id 'java'
+    id 'fabric-loom'                     version '1.8.13'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'java'
 }
 
 group   = 'com.example'
 version = '1.0.0'
 
+java { toolchain { languageVersion = JavaLanguageVersion.of(21) } }
+
 repositories {
     mavenCentral()
     maven { url 'https://maven.fabricmc.net' }
-    maven { url 'https://modmaven.dev' }          // <— new
-    maven { url 'https://m2.dv8tion.net/releases' }
+    maven { url 'https://modmaven.dev' }
+}
+
+configurations {
+    /*  Bucket that WILL be shaded  */
+    jdaShade
 }
 
 dependencies {
-    // Minecraft & Fabric
-    minecraft    "com.mojang:minecraft:1.21.4"
-    mappings     "net.fabricmc:yarn:1.21.4+build.3:v2"
+    /* ---- Fabric / Minecraft (compile‑time & runtime, NOT shaded) ---- */
+    minecraft         "com.mojang:minecraft:1.21.4"
+    mappings          "net.fabricmc:yarn:1.21.4+build.8:v2"
     modImplementation "net.fabricmc:fabric-loader:0.15.10"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.110.5+1.21.4"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.119.0+1.21.4"
 
-    // Discord API
-    implementation "net.dv8tion:JDA:5.2.3"
-}
 
-java {
-    toolchain { languageVersion = JavaLanguageVersion.of(21) }
+
+    /* ---- JDA (ONLY thing that gets shaded) ---- */
+    implementation "net.dv8tion:JDA:5.2.3" 
+    jdaShade "net.dv8tion:JDA:5.2.3"
 }
 
 shadowJar {
-    archiveClassifier.set('all')                         // ⇒ *-all.jar
+    /* --- THE CRITICAL LINE: limit to jdaShade bucket --- */
+    configurations = [project.configurations.jdaShade]
+
+    /* relocate to avoid clashes with other mods */
     relocate 'net.dv8tion.jda', 'com.example.discordverifier.shadow.jda'
-    zip64 = true
-    archiveBaseName.set('fabcord')
-    archiveVersion.set('0.1')
-    archiveClassifier.set('fabric')
+
+    /* Don’t accidentally drag Fabric in via transitive deps */
+    /*exclude 'net/fabricmc/**'*/
+
+    /* name & Zip64 */
+    /*archiveFileName.set('discord-verifier-server.jar')*/
+    zip64 true
+
+    archiveBaseName.set('fabcord')   // first part
+    archiveVersion.set('0.1')              // optional; "" to drop it
+    archiveClassifier.set('prerelease')          // text after the version
 }
-jar.finalizedBy(shadowJar)
+
+/* optional: make `shadowJar` the default artefact */
+jar.enabled = false
+assemble.dependsOn(shadowJar)

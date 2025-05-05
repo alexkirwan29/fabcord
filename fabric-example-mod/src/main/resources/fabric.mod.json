@@ -1,18 +1,20 @@
 {
 	"schemaVersion": 1,
-	"id": "discordverifier",
-	"version": "${version}",
-	"name": "Discord Verifier",
-	"description": "Links a Discord account to a Minecraft UUID with a 6‑digit code.",
-	"authors": [ "YourName" ],
+	"id": "fabcord",
+	"version": "0.1.0",
+	"name": "Fabcord",
+	"description": "Links a Discord account to a Minecraft UUID with a 6-digit code.",
+	"authors": [ "A29" ],
 	"license": "MIT",
-	"environment": "*",
+	"environment": "server",
 	"entrypoints": {
-		"main": [ "com.example.discordverifier.DiscordVerifierMod" ]
+		"main": [
+			"com.fabcord.FabcordMod"
+		]
 	},
 	"depends": {
 		"fabricloader": ">=0.15.10",
-		"fabric": "*",
+		"fabric-api": "*",
 		"minecraft": "1.21.4"
 	}
 }
