@@ -14,7 +14,7 @@ public class FabcordCommand {
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, Verifier verifier) {
         dispatcher.register(
-            literal("discord")
+            literal("fabcord")
                 .then(literal("verify")
                     .then(argument("discordUsername", StringArgumentType.word())
                         .executes(ctx -> {
@@ -29,3 +29,4 @@ public class FabcordCommand {
         );
     }
 }
+
